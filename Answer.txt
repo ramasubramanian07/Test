@@ -1,0 +1,807 @@
+index.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Hotel Booking System</h2>
+        
+        <!-- User Login -->
+        <div class="login-section">
+            <h3>User Login</h3>
+            <form id="userLoginForm">
+                <input type="text" id="userUsername" placeholder="Username" required>
+                <input type="password" id="userPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- Admin Login -->
+        <div class="login-section">
+            <h3>Admin Login</h3>
+            <form id="adminLoginForm">
+                <input type="text" id="adminUsername" placeholder="Username" required>
+                <input type="password" id="adminPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("userLoginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            window.location.href = "userDashboard.html";
+        });
+
+        document.getElementById("adminLoginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            window.location.href = "adminDashboard.html";
+        });
+    </script>
+</body>
+</html>
+
+styles.css:
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 10px #aaa;
+}
+
+input {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 8px;
+}
+
+button {
+    padding: 10px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+userDashboard.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Search Hotels</h2>
+    <input type="text" id="searchHotel" placeholder="Enter hotel name">
+    <button id="searchButton">Search</button>
+
+    <div id="hotelsList">
+        <div class="hotel">
+            <p>Hotel Name: Grand Palace</p>
+            <p>Location: Chennai</p>
+            <p>Price per night: ₹3000</p>
+            <button class="bookNow" data-hotel-id="1">Book Now</button>
+        </div>
+    </div>
+
+    <div id="bookingForm">
+        <h3>Confirm Booking</h3>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phone" placeholder="Phone" required>
+        <input type="date" id="date" required>
+        <input type="number" id="days" placeholder="Number of Days" required>
+        <button id="confirmBooking">Confirm Booking</button>
+    </div>
+
+    <div id="bookingMessage"></div>
+
+    <script>
+        document.getElementById("confirmBooking").addEventListener("click", function() {
+            document.getElementById("bookingMessage").innerText = "Booking Successful!";
+        });
+    </script>
+</body>
+</html>
+
+adminDashboard.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>All Bookings</h2>
+    <table border="1">
+        <tr>
+            <th>User Name</th>
+            <th>Hotel Name</th>
+            <th>Booking Date</th>
+            <th>Number of Days</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Rama</td>
+            <td>Grand Palace</td>
+            <td>2025-03-14</td>
+            <td>2</td>
+            <td id="status">Confirmed</td>
+            <td><button id="cancelBooking">Cancel</button></td>
+        </tr>
+    </table>
+
+    <div id="cancelMessage"></div>
+
+    <script>
+        document.getElementById("cancelBooking").addEventListener("click", function() {
+            document.getElementById("status").innerText = "Cancelled";
+            document.getElementById("cancelMessage").innerText = "Booking Cancelled Successfully!";
+        });
+    </script>
+</body>
+</html>
+
+HotelBookingTest.java:
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import java.util.List;
+
+public class HotelBookingTest {
+    WebDriver driver;
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("https://your-github-hosted-url/home");
+    }
+
+    @Test(priority = 1)
+    public void userLoginAndBookHotel() {
+        driver.findElement(By.id("userUsername")).sendKeys("testuser");
+        driver.findElement(By.id("userPassword")).sendKeys("password");
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+
+        // Search Hotel
+        driver.findElement(By.id("searchHotel")).sendKeys("Grand Palace");
+        driver.findElement(By.id("searchButton")).click();
+
+        // Book Now
+        driver.findElement(By.cssSelector(".bookNow")).click();
+        driver.findElement(By.id("name")).sendKeys("Rama");
+        driver.findElement(By.id("email")).sendKeys("rama@example.com");
+        driver.findElement(By.id("phone")).sendKeys("9876543210");
+        driver.findElement(By.id("date")).sendKeys("2025-03-14");
+        driver.findElement(By.id("days")).sendKeys("2");
+        driver.findElement(By.id("confirmBooking")).click();
+
+        WebElement message = driver.findElement(By.id("bookingMessage"));
+        Assert.assertEquals(message.getText(), "Booking Successful!");
+    }
+
+    @Test(priority = 2)
+    public void adminCancelBooking() {
+        driver.get("https://your-github-hosted-url/adminDashboard");
+        driver.findElement(By.id("adminUsername")).sendKeys("admin");
+        driver.findElement(By.id("adminPassword")).sendKeys("admin123");
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+
+        // Count bookings before cancellation
+        List<WebElement> bookingsBefore = driver.findElements(By.xpath("//table/tr"));
+        int countBefore = bookingsBefore.size();
+
+        // Cancel Booking
+        driver.findElement(By.id("cancelBooking")).click();
+        WebElement cancelMsg = driver.findElement(By.id("cancelMessage"));
+        Assert.assertEquals(cancelMsg.getText(), "Booking Cancelled Successfully!");
+
+        // Verify booking count reduced by 1
+        List<WebElement> bookingsAfter = driver.findElements(By.xpath("//table/tr"));
+        int countAfter = bookingsAfter.size();
+        Assert.assertEquals(countAfter, countBefore - 1);
+    }
+
+    @Test(priority = 3)
+    public void verifyCancelledBookingRemoved() {
+        driver.get("https://your-github-hosted-url/adminDashboard");
+
+        // Verify the cancelled booking is not in the active list
+        List<WebElement> bookingsAfter = driver.findElements(By.xpath("//table/tr"));
+        boolean isBookingStillPresent = false;
+
+        for (WebElement row : bookingsAfter) {
+            if (row.getText().contains("Rama") && row.getText().contains("Grand Palace")) {
+                isBookingStillPresent = true;
+                break;
+            }
+        }
+        Assert.assertFalse(isBookingStillPresent, "Cancelled booking is still present!");
+    }
+
+    @AfterClass
+    public void teardown() {
+        driver.quit();
+    }
+}
+______________________
+2.
+index.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Product Listing</h2>
+
+    <input type="text" id="searchInput" placeholder="Search products">
+    <button id="searchBtn">Search</button>
+
+    <div class="product">
+        <h3 class="product-name">Laptop</h3>
+        <p class="product-price">$1000</p>
+        <button class="add-to-cart" data-product-id="1">Add to Cart</button>
+    </div>
+
+    <a href="cart.html">Go to Cart</a>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+cart.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Shopping Cart</h2>
+
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td class="product-name">Laptop</td>
+            <td class="product-price">$1000</td>
+            <td><input type="number" class="cart-quantity" value="1"></td>
+            <td><button class="remove-btn">Remove</button></td>
+        </tr>
+    </table>
+
+    <p>Grand Total: <span id="grandTotal">$1000</span></p>
+
+    <button id="checkoutBtn">Proceed to Checkout</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+checkout.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Checkout</h2>
+
+    <form>
+        <label>Name:</label>
+        <input type="text" id="billingName"><br>
+
+        <label>Address:</label>
+        <input type="text" id="billingAddress"><br>
+
+        <label>Payment Method:</label>
+        <select id="paymentMethod">
+            <option value="Credit Card">Credit Card</option>
+            <option value="UPI">UPI</option>
+            <option value="Net Banking">Net Banking</option>
+        </select><br>
+
+        <button id="placeOrderBtn">Place Order</button>
+    </form>
+
+    <div id="orderSuccess" style="display: none;">Order Placed Successfully!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+styles.css:
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+button {
+    padding: 8px 12px;
+    margin: 5px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+#orderSuccess {
+    color: green;
+    font-weight: bold;
+}
+
+script.js:
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("checkoutBtn")?.addEventListener("click", function () {
+        window.location.href = "checkout.html";
+    });
+
+    document.getElementById("placeOrderBtn")?.addEventListener("click", function (e) {
+        e.preventDefault();
+        document.getElementById("orderSuccess").style.display = "block";
+    });
+});
+
+ECommerceTest.java
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import java.util.List;
+
+public class ECommerceTest {
+    WebDriver driver;
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("https://your-github-hosted-url/products");
+    }
+
+    @Test(priority = 1)
+    public void searchAndAddProductToCart() {
+        driver.findElement(By.id("searchInput")).sendKeys("Laptop");
+        driver.findElement(By.id("searchBtn")).click();
+        driver.findElement(By.cssSelector(".add-to-cart[data-product-id='1']")).click();
+
+        driver.get("https://your-github-hosted-url/cart");
+
+        WebElement productName = driver.findElement(By.cssSelector(".product-name"));
+        WebElement productPrice = driver.findElement(By.cssSelector(".product-price"));
+        Assert.assertEquals(productName.getText(), "Laptop");
+        Assert.assertEquals(productPrice.getText(), "$1000");
+    }
+
+    @Test(priority = 2)
+    public void updateCartAndCheckout() {
+        WebElement quantityField = driver.findElement(By.cssSelector(".cart-quantity"));
+        quantityField.clear();
+        quantityField.sendKeys("2");
+
+        WebElement grandTotal = driver.findElement(By.id("grandTotal"));
+        Assert.assertEquals(grandTotal.getText(), "$2000");
+
+        driver.findElement(By.cssSelector(".remove-btn")).click();
+        WebElement updatedGrandTotal = driver.findElement(By.id("grandTotal"));
+        Assert.assertEquals(updatedGrandTotal.getText(), "$0");
+    }
+
+    @Test(priority = 3)
+    public void completeCheckoutProcess() {
+        driver.get("https://your-github-hosted-url/products");
+        driver.findElement(By.cssSelector(".add-to-cart[data-product-id='1']")).click();
+        driver.get("https://your-github-hosted-url/cart");
+        driver.findElement(By.id("checkoutBtn")).click();
+
+        driver.findElement(By.id("billingName")).sendKeys("Rama");
+        driver.findElement(By.id("billingAddress")).sendKeys("Chennai, India");
+        driver.findElement(By.id("paymentMethod")).sendKeys("Credit Card");
+
+        driver.findElement(By.id("placeOrderBtn")).click();
+
+        WebElement orderSuccessMessage = driver.findElement(By.id("orderSuccess"));
+        Assert.assertEquals(orderSuccessMessage.getText(), "Order Placed Successfully!");
+    }
+
+    @AfterClass
+    public void teardown() {
+        driver.quit();
+    }
+}
+
+_________________________
+4.
+settings.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Settings Page</h2>
+
+    <form id="settingsForm">
+        <h3>Select Preferences:</h3>
+        <label><input type="checkbox" id="newsletter"> Newsletters</label><br>
+        <label><input type="checkbox" id="updates"> Updates</label><br>
+        <label><input type="checkbox" id="offers"> Offers</label><br>
+
+        <h3>Select Gender:</h3>
+        <label><input type="radio" name="gender" id="genderMale"> Male</label>
+        <label><input type="radio" name="gender" id="genderFemale"> Female</label>
+        <label><input type="radio" name="gender" id="genderOther"> Other</label>
+
+        <br><br>
+        <button type="button" id="saveBtn">Save</button>
+    </form>
+
+    <div id="successMessage" style="display: none; color: green;">Preferences Saved!</div>
+
+    <script>
+        document.getElementById("saveBtn").addEventListener("click", function() {
+            document.getElementById("successMessage").style.display = "block";
+        });
+    </script>
+</body>
+</html>
+
+CheckboxRadioTest.java:
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class CheckboxRadioTest {
+    WebDriver driver;
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("http://localhost/settings.html");
+    }
+
+    @Test(priority = 1)
+    public void selectPreferences() {
+        driver.findElement(By.id("newsletter")).click();
+        driver.findElement(By.id("updates")).click();
+        driver.findElement(By.id("offers")).click();
+        driver.findElement(By.id("genderMale")).click();
+        driver.findElement(By.id("saveBtn")).click();
+
+        WebElement message = driver.findElement(By.id("successMessage"));
+        Assert.assertEquals(message.getText(), "Preferences Saved!");
+    }
+
+    @Test(priority = 2)
+    public void selectDifferentPreferences() {
+        driver.findElement(By.id("newsletter")).click(); // Uncheck
+        driver.findElement(By.id("genderFemale")).click();
+        driver.findElement(By.id("saveBtn")).click();
+
+        WebElement message = driver.findElement(By.id("successMessage"));
+        Assert.assertEquals(message.getText(), "Preferences Saved!");
+    }
+
+    @AfterClass
+    public void teardown() {
+        driver.quit();
+    }
+}
+
+file.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload & Download</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>File Upload & Download</h2>
+
+    <h3>Upload File:</h3>
+    <input type="file" id="uploadFile" accept=".png, .jpg">
+    <button id="uploadBtn">Upload</button>
+
+    <div id="uploadMessage" style="display: none; color: green;">File Uploaded Successfully!</div>
+
+    <h3>Download File:</h3>
+    <a href="downloads/sample.txt" id="downloadLink" download>Download sample.txt</a>
+
+    <script>
+        document.getElementById("uploadBtn").addEventListener("click", function() {
+            var fileInput = document.getElementById("uploadFile");
+            if (fileInput.files.length > 0) {
+                document.getElementById("uploadMessage").style.display = "block";
+            } else {
+                alert("Please select a file to upload.");
+            }
+        });
+    </script>
+</body>
+</html>
+
+FileUploadDownloadTest.java:
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import java.io.File;
+
+public class FileUploadDownloadTest {
+    WebDriver driver;
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("http://localhost/file.html");
+    }
+
+    @Test(priority = 1)
+    public void uploadFile() {
+        WebElement uploadElement = driver.findElement(By.id("uploadFile"));
+        uploadElement.sendKeys("C:\\path\\to\\sample.png");
+
+        driver.findElement(By.id("uploadBtn")).click();
+        WebElement message = driver.findElement(By.id("uploadMessage"));
+        Assert.assertEquals(message.getText(), "File Uploaded Successfully!");
+    }
+
+    @Test(priority = 2)
+    public void downloadFile() {
+        driver.findElement(By.id("downloadLink")).click();
+
+        // Verify if the file is downloaded
+        File downloadedFile = new File("C:\\Users\\YourUser\\Downloads\\sample.txt");
+        Assert.assertTrue(downloadedFile.exists(), "File was not downloaded!");
+    }
+
+    @AfterClass
+    public void teardown() {
+        driver.quit();
+    }
+}
+_________________
+3.
+
+UserAPITest.java:
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import static io.restassured.RestAssured.given;
+
+public class UserAPITest {
+    private String baseURI = "http://localhost:8080";
+    private static String userId;
+
+    @BeforeClass
+    public void setup() {
+        RestAssured.baseURI = baseURI;
+    }
+
+    @Test(priority = 1)
+    public void createUser() {
+        String requestBody = "{ \"username\": \"testUser\", \"email\": \"testuser@example.com\", \"password\": \"password123\" }";
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .post("/users");
+
+        Assert.assertEquals(response.getStatusCode(), 201);
+        Assert.assertEquals(response.jsonPath().getString("message"), "User created successfully.");
+        userId = response.jsonPath().getString("id");
+    }
+
+    @Test(priority = 2, dependsOnMethods = "createUser")
+    public void getUserDetails() {
+        Response response = given()
+                .get("/users/" + userId);
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.jsonPath().getString("username"), "testUser");
+        Assert.assertEquals(response.jsonPath().getString("email"), "testuser@example.com");
+    }
+
+    @Test(priority = 3, dependsOnMethods = "getUserDetails")
+    public void updateUser() {
+        String updateBody = "{ \"email\": \"newemail@example.com\" }";
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(updateBody)
+                .put("/users/" + userId);
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.jsonPath().getString("message"), "User updated successfully.");
+    }
+
+    @Test(priority = 4, dependsOnMethods = "updateUser")
+    public void deleteUser() {
+        Response deleteResponse = given().delete("/users/" + userId);
+        Assert.assertEquals(deleteResponse.getStatusCode(), 200);
+        Assert.assertEquals(deleteResponse.jsonPath().getString("message"), "User deleted successfully.");
+
+        Response getResponse = given().get("/users/" + userId);
+        Assert.assertEquals(getResponse.getStatusCode(), 404);
+    }
+}
+
+Search.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Search Products</h2>
+    <input type="text" id="searchBox" placeholder="Enter product name">
+    <button id="searchBtn">Search</button>
+    <p id="resultMessage"></p>
+
+    <script>
+        document.getElementById("searchBtn").addEventListener("click", function() {
+            var query = document.getElementById("searchBox").value.toLowerCase();
+            if (query === "mobile") {
+                document.getElementById("resultMessage").innerText = "Product found: Mobile";
+            } else {
+                document.getElementById("resultMessage").innerText = "Product not found.";
+            }
+        });
+    </script>
+</body>
+</html>
+
+ProductSearchTest.java:
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class ProductSearchTest {
+    WebDriver driver;
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("http://localhost/search.html");
+    }
+
+    @Test(priority = 1)
+    public void searchForMobile() {
+        WebElement searchBox = driver.findElement(By.id("searchBox"));
+        WebElement searchButton = driver.findElement(By.id("searchBtn"));
+        
+        searchBox.sendKeys("Mobile");
+        searchButton.click();
+        
+        WebElement resultMessage = driver.findElement(By.id("resultMessage"));
+        Assert.assertEquals(resultMessage.getText(), "Product found: Mobile");
+    }
+
+    @Test(priority = 2)
+    public void searchForRandomText() {
+        WebElement searchBox = driver.findElement(By.id("searchBox"));
+        WebElement searchButton = driver.findElement(By.id("searchBtn"));
+
+        searchBox.clear();
+        searchBox.sendKeys("Laptop");
+        searchButton.click();
+
+        WebElement resultMessage = driver.findElement(By.id("resultMessage"));
+        Assert.assertEquals(resultMessage.getText(), "Product not found.");
+    }
+
+    @AfterClass
+    public void teardown() {
+        driver.quit();
+    }
+}
+
+API Endpoints
+
+Create User: POST http://localhost:8080/users
+
+Get User: GET http://localhost:8080/users/{id}
+
+Update User: PUT http://localhost:8080/users/{id}
+
+Delete User: DELETE http://localhost:8080/users/{id}
