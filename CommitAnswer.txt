@@ -1,0 +1,25 @@
+public class OptisDashboardTest extends BaseClass {
+    public static final String DASHBOARD_XPATH = "optisDashboard";  // Property reference
+
+    public void verifyDashboardLoaded() throws Exception {
+        try {
+            System.out.println("⚡ Checking Dashboard Load...");
+            WebElement dashboardElement = driver.findElement(By.xpath(properties.getProperty(DASHBOARD_XPATH)));
+
+            if (dashboardElement != null && dashboardElement.isDisplayed()) {
+                System.out.println("✅ Test Passed: Dashboard loaded successfully.");
+            } else {
+                System.out.println("❌ Test Failed: Dashboard is not displayed.");
+                throw new Exception("Dashboard element not found or not visible!");
+            }
+
+            // Assertion
+            Assert.assertNotNull(dashboardElement, "Dashboard element not found!");
+            Assert.assertTrue(dashboardElement.isDisplayed(), "Dashboard is not displayed!");
+
+        } catch (Exception e) {
+            System.out.println("❌ Error in verifying Dashboard: " + e.getMessage());
+            throw new Exception("Test Execution Failed - " + e.getMessage());
+        }
+    }
+}
