@@ -1,14 +1,16 @@
 UpdatePLD:
 
 package com.Optix.IM;
+package com.Optix.IM;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
 import com.e2e.Utilities.WebDriverUtility;
+
+import java.time.Duration;
 
 public class Update_PLD extends MoreOptions_Menu {
 
@@ -26,18 +28,19 @@ public class Update_PLD extends MoreOptions_Menu {
             Thread.sleep(2000);
             WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-            // Wait for success message text
-            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            boolean isSuccess = longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            boolean isMsgPresent = shortWait.until(ExpectedConditions.textToBePresentInElementLocated(
                     By.xpath(SuccessMsgXpath), "updated successfully"));
 
-            WebElement successMsg = driver.findElement(By.xpath(SuccessMsgXpath));
-            String msgText = successMsg.getText();
+            String msgText = isMsgPresent
+                    ? driver.findElement(By.xpath(SuccessMsgXpath)).getText()
+                    : "Success message not visible";
+
+            Thread.sleep(1000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
             System.out.println("Success Message: " + msgText);
 
-            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
-
-            if (isSuccess) {
+            if (msgText.contains("updated successfully")) {
                 System.out.println("Update verified: " + msgText);
                 listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "PASSED");
             } else {
@@ -59,9 +62,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
 import com.e2e.Utilities.WebDriverUtility;
+
+import java.time.Duration;
 
 public class RemoveJobTechTimeline extends MoreOptions_Menu {
 
@@ -79,18 +83,19 @@ public class RemoveJobTechTimeline extends MoreOptions_Menu {
             Thread.sleep(2000);
             WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-            // Wait for success message text
-            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            boolean isSuccess = longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            boolean isMsgPresent = shortWait.until(ExpectedConditions.textToBePresentInElementLocated(
                     By.xpath(RemoveMsg), "removed successfully"));
 
-            WebElement successMsg = driver.findElement(By.xpath(RemoveMsg));
-            String msgText = successMsg.getText();
+            String msgText = isMsgPresent
+                    ? driver.findElement(By.xpath(RemoveMsg)).getText()
+                    : "Success message not visible";
+
+            Thread.sleep(1000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
             System.out.println("Success Message: " + msgText);
 
-            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
-
-            if (isSuccess) {
+            if (msgText.contains("removed successfully")) {
                 System.out.println("Remove operation verified: " + msgText);
                 listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "PASSED");
             } else {
@@ -113,9 +118,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
 import com.e2e.Utilities.WebDriverUtility;
+
+import java.time.Duration;
 
 public class Cancel_Job extends MoreOptions_Menu {
 
@@ -131,19 +137,20 @@ public class Cancel_Job extends MoreOptions_Menu {
             Thread.sleep(2000);
             WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-            // Wait for success message text
-            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            boolean isSuccess = longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            boolean isMsgPresent = shortWait.until(ExpectedConditions.textToBePresentInElementLocated(
                     By.xpath(CancelMsg), "Cancelled successfully"));
 
-            WebElement successMsg = driver.findElement(By.xpath(CancelMsg));
-            String msgText = successMsg.getText();
+            String msgText = isMsgPresent
+                    ? driver.findElement(By.xpath(CancelMsg)).getText()
+                    : "Success message not visible";
+
+            Thread.sleep(1000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
             System.out.println("Cancelled Message: " + msgText);
 
-            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
-
-            if (isSuccess) {
-                System.out.println("Cancel operation verified: " + msgText);
+            if (msgText.contains("Cancelled successfully")) {
+                System.out.println("Cancel Operation verified: " + msgText);
                 listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "PASSED");
             } else {
                 System.out.println("Cancel message not matched!");
@@ -156,6 +163,3 @@ public class Cancel_Job extends MoreOptions_Menu {
         }
     }
 }
-
-
-
