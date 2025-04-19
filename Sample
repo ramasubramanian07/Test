@@ -1,3 +1,30 @@
+try {
+    // ... all your code until update button clicked
+    driver.findElement(By.xpath(Updatebtn)).click();
+
+    // Toast capture block
+    Thread.sleep(1000); // Small delay to allow toast to appear
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    String msgText = (String) js.executeScript(
+        "return document.querySelector('div[class*=\"Toastify\"]')?.innerText || '';"
+    );
+
+    System.out.println("Toast Message: " + msgText);
+
+    // Continue to close and verify
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
+
+    if (msgText.contains("updated successfully")) {
+        listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "PASSED");
+    } else {
+        listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "FAILED");
+    }
+}
+
+
+
+
+
 UpdatePLD:
 
 package com.Optix.IM;
