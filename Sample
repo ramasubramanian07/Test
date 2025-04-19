@@ -4,48 +4,52 @@ package com.Optix.IM;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 import com.e2e.Utilities.WebDriverUtility;
 
 public class Update_PLD extends MoreOptions_Menu {
-	
-	public static void updateJobToPld(String jobid) {
-	    try {
-	        Thread.sleep(1000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdatePLD), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(jobid);
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-	        // Wait for success message after update
-	        WebElement successMsg = WebDriverUtility.waitForVisibilityOfElementLocated(
-	            driver, wait, By.xpath(SuccessMsgXpath), 10); // <- Use variable for success msg xpath
-	        Thread.sleep(1000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
-	        String msgText = successMsg.getText();
-	        System.out.println("Success Message: " + msgText);
+    public static void updateJobToPld(String jobid) {
+        try {
+            Thread.sleep(1000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdatePLD), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(jobid);
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-	        if (msgText.contains("updated successfully")) {
-	            System.out.println("Update verified: " + msgText);
-	            listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "PASSED");
-	        } else {
-	            System.out.println("Success message not matched!");
-	           listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "FAILED");
-	        }
+            // Wait for success message text
+            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            boolean isSuccess = longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+                    By.xpath(SuccessMsgXpath), "updated successfully"));
 
-	    } catch (Exception e) {
-	        System.out.println("Exception in updateJobToPld: " + e.toString());
-	        listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "FAILED");
-	    }
-	}
+            WebElement successMsg = driver.findElement(By.xpath(SuccessMsgXpath));
+            String msgText = successMsg.getText();
+            System.out.println("Success Message: " + msgText);
 
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
 
+            if (isSuccess) {
+                System.out.println("Update verified: " + msgText);
+                listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "PASSED");
+            } else {
+                System.out.println("Success message not matched!");
+                listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "FAILED");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Exception in updateJobToPld: " + e.toString());
+            listener.runOnFinish("com.optixdispatch.IM", "UpdateJobToPld", "FAILED");
+        }
+    }
 }
 
 RemoveJOb:
@@ -53,49 +57,52 @@ package com.Optix.IM;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 import com.e2e.Utilities.WebDriverUtility;
 
 public class RemoveJobTechTimeline extends MoreOptions_Menu {
-	
-	public static void RemoveJobTech(String jobid, String techec) {
-	    try {
-//	        Thread.sleep(1000);
-//	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(RemoveJobTech), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(jobid);
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(TechEcField), 10).sendKeys(techec);
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-	        // Wait for success message after update
-	        WebElement successMsg = WebDriverUtility.waitForVisibilityOfElementLocated(
-	            driver, wait, By.xpath(RemoveMsg), 10); 
-	        Thread.sleep(1000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
-	        String msgText = successMsg.getText();
-	        System.out.println("Success Message: " + msgText);
+    public static void RemoveJobTech(String jobid, String techec) {
+        try {
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(RemoveJobTech), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(jobid);
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(TechEcField), 10).sendKeys(techec);
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-	        if (msgText.contains("removed successfully")) {
-	            System.out.println("Remove operation verified: " + msgText);
-	            listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "PASSED");
-	        } else {
-	            System.out.println("Success message not matched!");
-	             listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "FAILED");
-	        }
+            // Wait for success message text
+            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            boolean isSuccess = longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+                    By.xpath(RemoveMsg), "removed successfully"));
 
-	    } catch (Exception e) {
-	        System.out.println("Exception in RemoveJobTech: " + e.toString());
-	        listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "FAILED");
-	    }
-	}
+            WebElement successMsg = driver.findElement(By.xpath(RemoveMsg));
+            String msgText = successMsg.getText();
+            System.out.println("Success Message: " + msgText);
 
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
+
+            if (isSuccess) {
+                System.out.println("Remove operation verified: " + msgText);
+                listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "PASSED");
+            } else {
+                System.out.println("Success message not matched!");
+                listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "FAILED");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Exception in RemoveJobTech: " + e.toString());
+            listener.runOnFinish("com.optixdispatch.IM", "RemoveJobTechTimeline", "FAILED");
+        }
+    }
 }
 
 
@@ -104,52 +111,51 @@ package com.Optix.IM;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 import com.e2e.Utilities.WebDriverUtility;
 
 public class Cancel_Job extends MoreOptions_Menu {
-	
-	
-	public static void cancelJob(String jobid) {
-	    try {
-//	        Thread.sleep(1000);
-//	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(CancelJob), 10).click();
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(jobid);
-	        Thread.sleep(2000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-	        // Wait for success message after update
-	        WebElement successMsg = WebDriverUtility.waitForVisibilityOfElementLocated(
-	            driver, wait, By.xpath(CancelMsg), 10); // <- Use variable for success msg xpath
-	        Thread.sleep(1000);
-	        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
-	        String msgText = successMsg.getText();
-	        System.out.println("Cancelled Message: " + msgText);
+    public static void cancelJob(String jobid) {
+        try {
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(CancelJob), 10).click();
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(jobid);
+            Thread.sleep(2000);
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-	        if (msgText.contains("Cancelled successfully")) {
-	            System.out.println("Cancel Operation verified: " + msgText);
-	            listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "PASSED");
-	        } else {
-	            System.out.println("Cancel message not matched!");
-	           listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "FAILED");
-	        }
+            // Wait for success message text
+            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            boolean isSuccess = longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+                    By.xpath(CancelMsg), "Cancelled successfully"));
 
-	    } catch (Exception e) {
-	        System.out.println("Exception in updateJobToPld: " + e.toString());
-	        listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "FAILED");
-	    }
-	}
+            WebElement successMsg = driver.findElement(By.xpath(CancelMsg));
+            String msgText = successMsg.getText();
+            System.out.println("Cancelled Message: " + msgText);
 
+            WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Closescreen), 10).click();
 
+            if (isSuccess) {
+                System.out.println("Cancel operation verified: " + msgText);
+                listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "PASSED");
+            } else {
+                System.out.println("Cancel message not matched!");
+                listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "FAILED");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Exception in cancelJob: " + e.toString());
+            listener.runOnFinish("com.optixdispatch.IM", "CancelJob", "FAILED");
+        }
+    }
 }
-
-
 
 
 
