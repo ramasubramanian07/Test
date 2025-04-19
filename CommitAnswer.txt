@@ -1,30 +1,39 @@
 
-JOBID - 083DT5006 updated successfully!!
+SuccessMsgXpath = //div[contains(text(),'updated successfully')]
+public static void updateJobToPld(String public static void updateJobToPld(String Jobid) {
+    try {
+        Thread.sleep(1000);
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
+        Thread.sleep(2000);
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
+        Thread.sleep(2000);
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdatePLD), 10).click();
+        Thread.sleep(2000);
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(Jobid);
+        Thread.sleep(2000);
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
 
-public static void updateJobToPld(String Jobid) {
-		try {
-			Thread.sleep(1000);
-			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
-			Thread.sleep(2000);
-			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
-			Thread.sleep(2000);
-			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
-			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdatePLD), 10).click();
-			Thread.sleep(2000);
-			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(Jobid);
-			Thread.sleep(2000);
-			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
-			
-			//PrintUtil.logSuccess("Optix Dispatch Search Results ", logger);
-			//listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "PASSED");
+        // Wait for success message after update
+        WebElement successMsg = WebDriverUtility.waitForVisibilityOfElementLocated(
+            driver, wait, By.xpath(SuccessMsgXpath), 10); // <- Use variable for success msg xpath
 
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			//listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
-		}
+        String msgText = successMsg.getText();
+        System.out.println("Success Message: " + msgText);
 
-	}
+        if (msgText.contains("updated successfully")) {
+            System.out.println("Update verified: " + msgText);
+            // listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "PASSED");
+        } else {
+            System.out.println("Success message not matched!");
+            // listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
+        }
 
+    } catch (Exception e) {
+        System.out.println("Exception in updateJobToPld: " + e.toString());
+        // listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
+    }
+}
 
 
 public class OptisDashboardTest extends BaseClass {
