@@ -1,3 +1,91 @@
+package com.Optix.IM;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.testng.annotations.Test;
+
+import com.dispatch.optix.Dispatch_Login;
+import com.e2e.Utilities.BaseClass;
+import com.e2e.Utilities.CommonFunctions;
+import com.e2e.Utilities.ExtentReport;
+import com.e2e.Utilities.PrintUtil;
+import com.e2e.Utilities.WebDriverInstance;
+import com.e2e.Utilities.WebDriverUtility;
+
+public class MoreOptions_Menu extends BaseClass{
+	
+	private static WebDriverInstance instance;
+	public static String ApplPropFilePath = "propertyFiles/optix.properties";
+	public static String PropFilePath = "propertyFiles/optix.properties";
+	CommonFunctions common = new CommonFunctions();
+	static WebDriverUtility web = new WebDriverUtility();
+	public static Logger logger = LogManager.getLogger(MoreOptions_Menu.class);
+	public static String url = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "optixDispatch_URL");
+	public static String env = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "environment");
+	//MORE OPTIONS Menu
+	public static String More_Option = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "More_Option");
+	public static String UpdateJob = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "UpdateJob");
+	public static String Choose_Action = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "Choose_Action");
+	public static String UpdatePLD = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "UpdatePLD");
+	public static String SuccessMsgXpath = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "SuccessMsgXpath");
+	public static String Closescreen = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "Closescreen");
+	public static String JobIDField = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "JobIDField");
+	public static String Updatebtn = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "Updatebtn");
+	public static String RemoveJobTech = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "RemoveJobTech");
+	public static String TechEcField = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "TechEcField");
+	public static String RemoveMsg = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "RemoveMsg");
+	public static String CancelJob = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "CancelJob");
+	public static String CancelMsg = CommonFunctions.getPropValuesFromFile(ApplPropFilePath, "CancelMsg");
+	
+	@Test
+	public static void updateJObCheck() throws Exception {
+		ExtentReport.startExtentTestCase("OptixDispatch IM Update Job Actions");
+		try {
+			//DashboardLoad dash=new DashboardLoad();
+			//DispatchTechMonSearchResults dsr = new DispatchTechMonSearchResults();
+			instance = new WebDriverInstance();
+			driver = instance.getWebDriverInstace("Chrome");
+			driver.get(url);
+			System.out.println("URL: " + url);
+			String actualTitle = driver.getTitle();
+			System.out.println("Actual Title: " + actualTitle);
+			// Logging into Optix Dispatch
+			Dispatch_Login.DispatchLogin(driver);
+			Thread.sleep(10000);
+			
+			//TC:01 UPDATE PLD
+			Update_PLD.updateJobToPld("083DT5006");
+			// TC:02 RemoveJobTech
+			RemoveJobTechTimeline.RemoveJobTech("083DT5006","bdi");
+			//TC:03CancelJob
+			Cancel_Job.cancelJob("083DT5006");
+					
+
+					// CloseReturn
+					// Close_Return.CloseReturn(driver);
+
+					driver.close();
+					PrintUtil.logSuccess(" Optix Dispatch UpdateJob Actions -> passed", logger);
+					listener.runOnFinish("com.Optix.IM", "UpdateJob Actions", "PASSED");
+				} catch (Exception e) {
+					// driver.switchTo().parentFrame();
+					System.out.println(e.getMessage());
+					PrintUtil.logError("Exception while performing Optix dispatch Update Job actions", logger,
+							"UpdateJOb", driver, "FAIL");
+
+					listener.runOnFinish("com.optixdispatch.IM", "UpdateJob", "FAILED");
+
+				}
+			}
+
+}
+
+
+
+
+
+
+
 public static void RemoveJobTech(String jobid, String techec) {
     try {
         Thread.sleep(1000);
