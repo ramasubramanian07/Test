@@ -1,3 +1,32 @@
+
+JOBID - 083DT5006 updated successfully!!
+
+public static void updateJobToPld(String Jobid) {
+		try {
+			Thread.sleep(1000);
+			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(More_Option), 10).click();
+			Thread.sleep(2000);
+			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdateJob), 10).click();
+			Thread.sleep(2000);
+			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Choose_Action), 10).click();
+			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(UpdatePLD), 10).click();
+			Thread.sleep(2000);
+			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(JobIDField), 10).sendKeys(Jobid);
+			Thread.sleep(2000);
+			WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(Updatebtn), 10).click();
+			
+			//PrintUtil.logSuccess("Optix Dispatch Search Results ", logger);
+			//listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "PASSED");
+
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			//listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
+		}
+
+	}
+
+
+
 public class OptisDashboardTest extends BaseClass {
     public static final String DASHBOARD_XPATH = "optisDashboard";  // Property reference
 
