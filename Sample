@@ -1,3 +1,33 @@
+// Store the current window handle
+String mainWindow = driver.getWindowHandle();
+
+// Click on the Job ID (which opens a new window)
+driver.findElement(By.xpath("YOUR_JOBID_XPATH")).click();
+
+// Wait until new window opens
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+wait.until(driver -> driver.getWindowHandles().size() > 1);
+
+// Switch to new window
+for (String windowHandle : driver.getWindowHandles()) {
+    if (!windowHandle.equals(mainWindow)) {
+        driver.switchTo().window(windowHandle);
+        break;
+    }
+}
+
+// Now you are in the new window
+// Click the button
+driver.findElement(By.xpath("YOUR_BUTTON_XPATH")).click();
+
+// Optional: Close new window and switch back
+driver.close(); // closes new window
+driver.switchTo().window(mainWindow);
+
+
+
+
+
 try {
     // ... all your code until update button clicked
     driver.findElement(By.xpath(Updatebtn)).click();
