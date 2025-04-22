@@ -1,3 +1,12 @@
+// Scroll the sidebar panel all the way down at the end
+WebElement panel = driver.findElement(By.cssSelector("div.sidebarBody.panel-body.ng-star-inserted"));
+((JavascriptExecutor) driver).executeScript(
+    "arguments[0].scrollTop = arguments[0].scrollHeight;", 
+    panel
+);
+
+
+
 // Store the current window handle
 String mainWindow = driver.getWindowHandle();
 
