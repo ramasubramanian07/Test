@@ -1,3 +1,35 @@
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.*;
+
+public class InnerScroll {
+    public static void main(String[] args) {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://occsy-cloud.ebiz.verizon.com/optixco/#/dashboard");
+
+        // Wait for inner div to load using its class name
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement innerDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.cssSelector("div.panel-body.co-panel.mt-2")
+        ));
+
+        // Wait for data to load (you can also wait for specific text/element inside if needed)
+        Thread.sleep(5000); // Wait 5 seconds additionally
+
+        // Scroll inside the div using JavaScript
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].scrollTop = arguments[0].scrollHeight;", innerDiv
+        );
+
+        // Optional: Close driver
+        // driver.quit();
+    }
+}
+
+
+
+
+
 // Scroll the sidebar panel all the way down at the end
 WebElement panel = driver.findElement(By.cssSelector("div.sidebarBody.panel-body.ng-star-inserted"));
 ((JavascriptExecutor) driver).executeScript(
