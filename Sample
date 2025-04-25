@@ -1,4 +1,7 @@
- WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//th[@data-field='status']//a[contains(@class,'k-header-column-menu')]//span[contains(@class,'k-icon k-more-vertical')]
+
+
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 WebElement messageBox = wait.until(ExpectedConditions.visibilityOfElementLocated(
     By.xpath("//div[contains(@class,'outageaccordion') or contains(text(), '" + expectedMessage + "')]")
 ));
