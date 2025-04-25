@@ -1,3 +1,6 @@
+//th[@data-field='status']//a[contains(@class,'k-header-column-menu')]
+
+
 //th[@data-field='status']//a[contains(@class,'k-header-column-menu')]//span[contains(@class,'k-icon k-more-vertical')]
 
 
