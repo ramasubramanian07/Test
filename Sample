@@ -1,3 +1,24 @@
+ WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+WebElement messageBox = wait.until(ExpectedConditions.visibilityOfElementLocated(
+    By.xpath("//div[contains(@class,'outageaccordion') or contains(text(), '" + expectedMessage + "')]")
+));
+String actualMessage = messageBox.getText();
+
+if(actualMessage.contains(expectedMessage)) {
+    System.out.println("Message verified: " + actualMessage);
+} else {
+    System.out.println("Message not found or mismatch.");
+}
+
+
+
+
+
+
+
+
+
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.*;
