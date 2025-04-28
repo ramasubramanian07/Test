@@ -1,3 +1,23 @@
+try {
+    if (last.isDisplayed()) {
+        System.out.println("Central office search is viewed successfully.");
+        Listener.runOnFinish("com.optixdispatch.co", "Central Office Details are visible", "PASSED");
+    } else {
+        System.out.println("Central office search is NOT viewed.");
+        Listener.runOnFinish("com.optixdispatch.co", "Central Office Details are not visible", "FAILED");
+    }
+} catch (Exception e) {
+    System.out.println("Exception occurred: " + e.getMessage());
+    Listener.runOnFinish("com.optixdispatch.co", "Exception during checking Central Office Details visibility", "FAILED");
+} finally {
+    driver.quit();
+}
+
+
+
+
+
+
 techInfoSection = //div[@class='col-lg-3']
 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 WebElement techInfoSection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(techInfoXPath)));
