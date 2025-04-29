@@ -1,3 +1,52 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+
+public class SuccessMessageTest {
+
+    WebDriver driver; // Assume this is already initialized
+
+    @Test
+    public void verifySuccessMessage() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement messageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[contains(@class, 'message') and contains(text(), 'updated successfully')]")
+        ));
+
+        String actualMessage = messageElement.getText();
+        Assert.assertTrue(actualMessage.contains("updated successfully"),
+                "Test Failed: Success message not displayed or incorrect");
+    }
+}
+
+
+
+
+
+
+
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+WebElement messageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[contains(@class, 'message') and contains(text(), 'updated successfully')]")
+        ));
+
+        String actualMessage = messageElement.getText();
+        Assert.assertTrue(actualMessage.contains("updated successfully"),
+                "Test Failed: Success message not displayed or incorrect");
+    }
+}
+
+
+
+
+
 try {
     if (last.isDisplayed()) {
         System.out.println("Central office search is viewed successfully.");
