@@ -1,4 +1,53 @@
 try {
+    // Initial setup
+    instance = new WebDriverInstance();
+    driver = instance.getWebDriverInstance("chrome");
+    driver.get(url);
+    System.out.println("URL: " + url);
+    String actualTitle = driver.getTitle();
+    System.out.println("Actual Title: " + actualTitle);
+
+    // Login
+    Dispatch_Login.DispatchLogin(driver);
+    Thread.sleep(10000);
+
+    // Search actions
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchSearchTextbox), 10).sendKeys(searchitem);
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(First_Option), 10).click();
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchSearchButton), 10).click();
+
+    // Wait for possible job summary or popup
+    Thread.sleep(5000); // Optional, depends on system behavior
+
+    // Check if job summary is visible
+    List<WebElement> jobSummaryElements = driver.findElements(By.xpath(jobSummary));
+    if (jobSummaryElements.size() > 0 && jobSummaryElements.get(0).isDisplayed()) {
+        // Compare job summary content
+        String summaryText = WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(jobSummaryLabel), 10).getText();
+        Assert.assertEquals(summaryText, searchitem);
+
+        // Click back
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchbackbutton), 10).click();
+
+        Listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "PASSED");
+    } else {
+        // Job summary not found → Fail the test
+        Assert.fail("Job summary not displayed. Possible no-data popup shown.");
+    }
+
+    driver.quit();
+
+} catch (Exception e) {
+    System.out.println(e.toString());
+    Listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
+}
+
+
+
+
+
+
+try {
     // Perform search
     WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchSearchTextbox), 10).sendKeys(searchText);
     WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(First_Option), 10).click();
@@ -28,5 +77,4 @@ try {
 
 } catch (Exception e) {
     System.out.println(e.toString());
-    Listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
-}
+    Listener
