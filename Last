@@ -1,0 +1,32 @@
+try {
+    // Perform search
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchSearchTextbox), 10).sendKeys(searchText);
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(First_Option), 10).click();
+    WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchSearchButton), 10).click();
+
+    // Wait and check if DispatchPage is displayed
+    WebElement dispatchPage = WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(jobSummary), 10);
+
+    if (dispatchPage != null && dispatchPage.isDisplayed()) {
+        // Continue with validations if dispatch page is displayed
+        Assert.assertTrue("Dispatch Page is displayed", true);
+
+        // Example: Validate job summary label
+        WebElement summaryLabel = WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(jobSummaryLabel), 10);
+        Assert.assertTrue("Job Summary Label is displayed", summaryLabel.isDisplayed());
+
+        // Back Button
+        WebDriverUtility.waitForVisibilityOfElementLocated(driver, wait, By.xpath(dispatchbackbutton), 10).click();
+
+        LoggerUtil.logSuccess("Optix Dispatch Search Results", "PASSED");
+        Listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "PASSED");
+
+    } else {
+        // DispatchPage not displayed - mark as failed
+        Assert.fail("Dispatch result is not displayed after search.");
+    }
+
+} catch (Exception e) {
+    System.out.println(e.toString());
+    Listener.runOnFinish("com.optixdispatch.IM", "DispatchSearchResults", "FAILED");
+}
