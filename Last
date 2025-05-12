@@ -1,3 +1,29 @@
+@And("{actor} Navigates To Transport Module")
+public void Navigates_To_Transport_Module(Actor actor) {
+    actor.attemptsTo(Click.on(IbPage.TransportModule));
+
+    // Switch to new window
+    String originalWindow = getDriver().getWindowHandle();
+    new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+        .until(ExpectedConditions.numberOfWindowsToBe(2));
+
+    for (String windowHandle : getDriver().getWindowHandles()) {
+        if (!originalWindow.contentEquals(windowHandle)) {
+            getDriver().switchTo().window(windowHandle);
+            break;
+        }
+    }
+
+    // Now wait for the OneFiber element AFTER switching
+    WaitUntil.the(Visibility.of(IbPage.OneFiber)).forNoMoreThan(10).seconds();
+}
+
+
+
+
+
+
+
 try {
     // Initial setup
     instance = new WebDriverInstance();
