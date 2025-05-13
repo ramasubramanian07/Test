@@ -1,3 +1,27 @@
+@Then("{actor} verify The SPM Site Is Viewable")
+public void verify_The_SPM_Site_Is_Viewable(Actor actor) {
+    String originalWindow = getDriver().getWindowHandle();
+
+    // Switch only if not already switched
+    if (getDriver().getWindowHandles().size() > 1) {
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if (!originalWindow.contentEquals(windowHandle)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+    }
+
+    // Now verify the element is visible
+    boolean isElementPresent = getDriver().findElement(IBpage.SpmSiteView).isDisplayed();
+    Assert.assertTrue("SPM Site is not viewable", isElementPresent);
+}
+
+
+
+
+
+
 actor.attemptsTo(
     Click.on(Target.the("Unselected row checkbox")
         .located(By.xpath("//input[@type='checkbox' and @aria-label='Select row' and @aria-checked='false']/following-sibling::label")))
