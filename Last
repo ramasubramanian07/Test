@@ -1,3 +1,17 @@
+actor.attemptsTo(
+    Click.on(Target.the("Unselected row checkbox")
+        .located(By.xpath("//input[@type='checkbox' and @aria-label='Select row' and @aria-checked='false']/following-sibling::label")))
+);
+
+//input[@type='checkbox' and @aria-label='Select row' and @aria-checked='false']/following-sibling::label
+
+
+//label[@class='k-checkbox-label k-no-text' and @for='6e70b5c7-45f3-4e47-ad18-51a4c6393c77']
+
+
+
+
+
 @And("{actor} Navigates To Transport Module")
 public void Navigates_To_Transport_Module(Actor actor) {
     actor.attemptsTo(Click.on(IbPage.TransportModule));
