@@ -1,3 +1,27 @@
+public static boolean isElementDisplayed(RemoteWebDriver driver, String xpath, String stepName) {
+    boolean isDisplayed = false;
+
+    try {
+        WebElement element = driver.findElement(By.xpath(xpath));
+        if (element.isDisplayed()) {
+            System.out.println("PASS: " + stepName + " is displayed.");
+            isDisplayed = true;
+        } else {
+            System.out.println("FAIL: " + stepName + " is not displayed.");
+        }
+    } catch (Exception e) {
+        System.out.println("EXCEPTION in step: " + stepName + " - " + e.getMessage());
+    }
+
+    return isDisplayed;
+}
+
+
+
+
+
+
+
 @Then("{actor} verify The SPM Site Is Viewable")
 public void verify_The_SPM_Site_Is_Viewable(Actor actor) {
     String originalWindow = getDriver().getWindowHandle();
