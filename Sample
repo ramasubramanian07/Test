@@ -1,3 +1,34 @@
+public static boolean openWindow(RemoteWebDriver driver, String elementDescription, WebElement elementToClick, String testData) throws Exception {
+    try {
+        // Get current window handle (parent window)
+        String parentWindow = driver.getWindowHandle();
+        
+        // Click the element that opens new window
+        elementToClick.click();
+        
+        // Wait for new window to appear
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+        
+        // Get all window handles and switch to new window
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+        
+        return true;
+    } catch (Exception e) {
+        System.err.println("Failed to switch windows: " + e.getMessage());
+        return false;
+    }
+}
+
+
+
+
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
