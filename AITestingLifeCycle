@@ -1,0 +1,191 @@
+🤖 AI-Assisted Test Suite Creation — Lifecycle Overview
+Workspace: CND Application (Connect & Discovery) Framework: Cucumber + Serenity BDD (Java) Prompting Engine: GitHub Copilot / AI Agent Date: April 2026
+
+📌 What Is This?
+This workspace uses three AI prompting files in the utils/ folder to create a complete, production-ready automated test suite for the CND (Connect & Discovery) web application — without writing a single line of code manually.
+
+The lifecycle follows a 3-Step Prompting Pipeline, where the output of one step feeds directly into the next.
+
+🗂️ The Three Prompting Files
+#	File	Role	When to Use
+1️⃣	applicationAnalysisGuidelines.txt	Application Analyst	First — Understand the app
+2️⃣	testGenerationGuidelines.txt	Test Case Engineer	Second — Design test cases
+3️⃣	CucumberTestGenerator.txt	Automation Coder	Third — Generate Java code
+💡 Bonus: CNDApplicationGuidlines.txt(optional).txt is a CND-specific supplement used alongside Step 1 to give the AI deeper context about the CND application's navigation patterns and UI structure.
+
+🔄 Full Lifecycle Pipeline
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      AI TEST SUITE CREATION LIFECYCLE                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────┐
+  │  STEP 1: APP ANALYSIS    │   ← applicationAnalysisGuidelines.txt
+  │                          │     + CNDApplicationGuidlines.txt (optional)
+  │  INPUT:  CND Source Code │
+  │  OUTPUT: App Knowledge   │
+  └────────────┬─────────────┘
+               │  (App structure, modules, user journeys, UI elements)
+               ▼
+  ┌──────────────────────────┐
+  │  STEP 2: TEST DESIGN     │   ← testGenerationGuidelines.txt
+  │                          │
+  │  INPUT:  App Knowledge   │
+  │  OUTPUT: JSON Test Cases │
+  └────────────┬─────────────┘
+               │  (Structured JSON with steps, expected results, complexity)
+               ▼
+  ┌──────────────────────────┐
+  │  STEP 3: CODE GENERATION │   ← CucumberTestGenerator.txt
+  │                          │
+  │  INPUT:  JSON Test Cases │
+  │  OUTPUT: Java Test Code  │
+  └──────────────────────────┘
+               │
+               ▼
+    ✅ .feature files (Gherkin)
+    ✅ Step Definitions (Java)
+    ✅ Page Objects / Action Classes
+    ✅ Serenity HTML Reports
+📖 Step-by-Step Breakdown
+🔷 STEP 1 — Application Analysis
+File: applicationAnalysisGuidelines.txt Supplement: CNDApplicationGuidlines.txt(optional).txt
+
+Purpose: Train the AI to deeply understand the CND application before any testing begins.
+
+What the AI Does:
+
+Phase	Action
+Phase 1	Discovers project structure — tech stack, directories, build tools
+Phase 2	Maps user journeys and screen-by-screen navigation flows
+Phase 3	Identifies features — CRUD, Search, Data Viz, Reporting
+Phase 4	Catalogs UI components, API integrations, state management
+Phase 5	Assesses test readiness and prioritizes areas for coverage
+CND-Specific Knowledge Added (from optional file):
+
+Navigation pattern: Login → Dashboard → Search (CLLI) → Category Tab → Module → Subcategory
+Engineering Category modules: Floor Plan, Equipment Search, Connection Detail, Cable
+Key UI components: SearchBarNew.js, .search-engine__input, modal dialogs, zoom controls
+Floor Plan specifics: Graphic/Tree View, Zoom In/Out/Reset, Rack interactions, Change Floor Plan modal
+Output: A comprehensive understanding of the app that the AI carries into Step 2.
+
+🔷 STEP 2 — Test Case Generation
+File: testGenerationGuidelines.txt
+
+Purpose: Generate structured, human-readable test cases in JSON format based on the app knowledge from Step 1.
+
+Test Case Format (Option 2 — Recommended):
+
+{
+  "case_description": "Verify Floor Plan module loads via Engineering category",
+  "test_steps": [
+    {
+      "step_number": "TS_01",
+      "action": "Open Browser and navigate to CND Application URL",
+      "expected_result": "The SSO Login Page is displayed successfully"
+    },
+    {
+      "step_number": "TS_02",
+      "action": "Enter valid username and password",
+      "expected_result": "Credentials are entered successfully"
+    }
+  ],
+  "modules_impacted": ["FloorPlan.js", "SearchBarNew.js"],
+  "test_complexity": "5"
+}
+Coverage Rules: | Category | Distribution | |----------|-------------| | Functional Test Cases | 80% — Business logic, CRUD, workflows | | UI Navigation Test Cases | 20% — Menus, routing, deep-linking | | Performance / Security | ❌ Out of Scope |
+
+Complexity Rules: | Level | Range | Description | |-------|-------|-------------| | Low | 1–4 | Single module, 5–7 steps, simple CRUD | | Medium | 5–7 | 2-module interaction, 7–20 steps | | High | 8–10 | ❌ NOT ALLOWED |
+
+Navigation Flow Standard (all CND tests follow this):
+
+Step 1:  Launch Browser → Enter CND URL
+Step 2:  SSO Login (username + password)
+Step 3:  Dashboard loads
+Step 4:  Click Search bar → Enter CLLI/criteria
+Step 5:  Select Engineering/Template category tab
+Step 6:  Select module (e.g., Floor Plan)
+Step 7:  Select subcategory (e.g., Site Code/CLLI)
+Step 8:  Execute module-specific test steps
+🔷 STEP 3 — Automation Code Generation
+File: CucumberTestGenerator.txt
+
+Purpose: Convert the JSON test cases from Step 2 into executable Java/Cucumber/Serenity test code — integrated with the existing CND-DomainFramework.
+
+What Gets Generated:
+
+CND-DomainFramework/
+  src/test/
+    resources/features/
+      └── [Module]Tests.feature        ← Gherkin scenarios
+    java/starter/
+      stepdefinitions/
+        └── [Module]StepDefinitions.java  ← @Given @When @Then
+      teststeps/
+        └── [Module]Actions.java          ← Screenplay Task classes
+      pageobjects/
+        └── [Module]Page.java             ← UI element locators (if new)
+Golden Rules for Code Generation:
+
+Rule	Detail
+🚫 Never modify existing files	Only extend — never break existing tests
+♻️ Reuse first	Login, navigation, search steps already exist — reuse them
+✅ Real UI interactions	Use Click.on(), Enter.theValue(), WaitUntil.the(), Ensure.that()
+🔍 Module-specific step names	@When("the {actor} clicks the Floor Plan {string} button")
+⏱️ Wait conditions mandatory	Every UI interaction must have WaitUntil before it
+✅ Verification at every end	Every scenario must close with a Then verifies... step
+Verification After Generation:
+
+# 1. Compile check
+mvn clean test-compile
+
+# 2. Full test run + Serenity report
+mvn clean verify
+🗺️ Visual Summary
+┌─────────────────────────────────────────────────────────────┐
+│               INPUTS → PROMPTS → OUTPUTS                    │
+├──────────────┬────────────────────────┬────────────────────┤
+│    INPUT     │    PROMPTING FILE      │      OUTPUT        │
+├──────────────┼────────────────────────┼────────────────────┤
+│ CND Codebase │ applicationAnalysis    │ App Knowledge Doc  │
+│ + optional   │ Guidelines.txt         │ (Modules, Flows,   │
+│   CND guide  │                        │  UI Elements)      │
+├──────────────┼────────────────────────┼────────────────────┤
+│ App Knowledge│ testGeneration         │ JSON Test Cases    │
+│ Doc          │ Guidelines.txt         │ (Steps + Expected  │
+│              │                        │  Results + Meta)   │
+├──────────────┼────────────────────────┼────────────────────┤
+│ JSON Test    │ CucumberTest           │ Java Test Code     │
+│ Cases        │ Generator.txt          │ (.feature files,   │
+│              │                        │  Step Defs,        │
+│              │                        │  Action Classes)   │
+└──────────────┴────────────────────────┴────────────────────┘
+📁 Output Folder Destinations
+Artifact	Location
+Generated JSON Test Cases	VS_AI/AI_Case_Generation/Manual_Case/
+Feature Files (.feature)	CND-DomainFramework/src/test/resources/features/
+Step Definitions	CND-DomainFramework/src/test/java/starter/stepdefinitions/
+Action/Task Classes	CND-DomainFramework/src/test/java/starter/teststeps/
+Serenity HTML Reports	CND-DomainFramework/target/site/serenity/
+✅ Quality Gates (Must Pass Before Done)
+Gate	Command / Check
+Compile success	mvn clean test-compile → No errors
+No duplicate step defs	All @When/@Then patterns are unique per module
+Real UI actions	No test step is only a System.out.println()
+All steps covered	Every Gherkin step has a Java step definition
+End-to-end scenario passes	mvn clean verify → At least 1 scenario passes
+Reports generated	target/site/serenity/index.html exists
+🔁 When to Re-Run Each Step
+Trigger	Re-run Step
+New module added to CND app	Step 1 → 2 → 3
+Existing module UI changed	Step 1 → 2 → 3
+Adding more test cases to existing module	Step 2 → 3
+Fixing/updating existing automation code	Step 3 only
+Changing framework structure	Step 3 only
+💡 Tips for Best Results
+Always run Step 1 first when working with a new or updated module — never skip app analysis.
+Use the optional CND guidelines alongside Step 1 for faster, more accurate navigation flows.
+Feed Step 1 output directly into Step 2 as context — this is what makes the test cases precise.
+One module at a time — generate test cases per module for better accuracy and traceability.
+Review JSON before Step 3 — validate test steps make sense before generating Java code.
+Always compile after Step 3 — catch errors early with mvn clean test-compile.
+Generated: April 3, 2026 | CND AI Testing Initiative
